@@ -1,3 +1,4 @@
 .*sw[op]
 step[0-9]*/*
 !step[0-9]*/*py
+*root
