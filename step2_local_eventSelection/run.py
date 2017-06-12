@@ -7,7 +7,7 @@ Add event selection to process, building from step1_local_dataframeOnly/run.py
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
 import alphatwirl
-from core.table_completion import complete
+from core.completions import complete
 from core.cut_flows import cut_flow_with_counter
 import ROOT
 import pprint
@@ -72,7 +72,7 @@ def dataframe_config():
 
 def summarize(tree, df_cfg, event_selection, max_events = -1):
 
-    reader_collector_pairs = [event_selection]
+    reader_collector_pairs = event_selection
 
     tableConfigCompleter = TableConfigCompleter(
         createOutFileName = TableFileNameComposer2(default_prefix = 'tbl_n')

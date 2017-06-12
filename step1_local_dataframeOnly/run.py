@@ -7,7 +7,7 @@ bins and unweighted event yields
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
 import alphatwirl
-from core.table_completion import complete
+from core.completions import complete
 import ROOT
 import pprint
 
