@@ -7,13 +7,16 @@ bins and unweighted event yields
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
 import alphatwirl
-from core.completions import complete
+import alphatwirl_interface as ai
+from alphatwirl_interface.completions import complete
 import ROOT
 import pprint
 
 def main(in_filename, out_dir, tree_name="tree"):
     # Get the input file
     infile = ROOT.TFile.Open(in_filename)
+    if not infile or infile.IsZombie():
+        return
     tree = infile.Get(tree_name)
     if not tree:
         print "Problem getting tree '",tree_name,"' from input file:",in_filename
