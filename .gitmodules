@@ -3,4 +3,4 @@
 	url = https://github.com/benkrikler/alphatwirl
 [submodule "external/alphatwirl-interface"]
 	path = external/alphatwirl-interface
-	url = https://github.com/benkrikler/alphatwirl-interface
+	url = git@github.com:benkrikler/alphatwirl-interface
