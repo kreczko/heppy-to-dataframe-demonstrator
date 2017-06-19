@@ -1,6 +1,6 @@
-[submodule "externals/alphatwirl"]
+[submodule "external/alphatwirl"]
 	path = external/alphatwirl
 	url = https://github.com/benkrikler/alphatwirl
-[submodule "externals/alphatwirl-interface"]
+[submodule "external/alphatwirl-interface"]
 	path = external/alphatwirl-interface
 	url = https://github.com/benkrikler/alphatwirl-interface
