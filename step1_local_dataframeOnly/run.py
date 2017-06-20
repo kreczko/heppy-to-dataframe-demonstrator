@@ -7,7 +7,6 @@ bins and unweighted event yields
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
 import alphatwirl
-import alphatwirl_interface as ai
 from alphatwirl_interface.completions import complete
 import ROOT
 import pprint
@@ -52,10 +51,12 @@ def dataframe_config():
 
 def summarize(tree, df_cfg, max_events = -1):
 
+    reader_collector_pairs = []
+
     tableConfigCompleter = TableConfigCompleter(
         createOutFileName = TableFileNameComposer2(default_prefix = 'tbl_n')
     )
-    reader_collector_pairs = complete( df_cfg, tableConfigCompleter)
+    reader_collector_pairs += complete( df_cfg, tableConfigCompleter)
 
     def event_builder():
         return alphatwirl.roottree.BEvents(tree, maxEvents = max_events)
