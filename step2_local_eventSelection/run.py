@@ -49,7 +49,7 @@ def cut_flow():
         'ev : 0.1 <= ev.jet_chHEF[0] < 0.95',
         'ev : 130 <= ev.mht40_pt[0]',
     ))
-    # These would be nice, but they require scribblers which we don't have yet
+    # These would be nice, but they require scribblers; we add these in step3
     #    'ev : ev.MhtOverMet[0] < 1.25',
 
     return cut_flow_with_counter(event_selection, "cut_flow_table.txt")
@@ -110,5 +110,4 @@ def process_options():
 
 if __name__ == "__main__":
     args = process_options()
-    print(args)
     main(**args.__dict__)

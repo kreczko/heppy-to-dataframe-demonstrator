@@ -7,15 +7,17 @@ Use a scribbler to add data to events, and extend step2's event selection
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
 import alphatwirl
-from core.completions import complete, to_null_collector_pairs
-from core.cut_flows import cut_flow_with_counter
-from core.scribblers import  DivideNumpyArrays
+from alphatwirl_interface.completions import complete
+from alphatwirl_interface.cut_flows import cut_flow_with_counter
+from alphatwirl_interface.scribblers import  DivideNumpyArrays
 import ROOT
 import pprint
 
 def main(in_filename, out_dir, tree_name="tree"):
     # Get the input file
     infile = ROOT.TFile.Open(in_filename)
+    if not infile or infile.IsZombie():
+        return
     tree = infile.Get(tree_name)
     if not tree:
         print "Problem getting tree '",tree_name,"' from input file:",in_filename

@@ -87,5 +87,4 @@ def process_options():
 
 if __name__ == "__main__":
     args = process_options()
-    print(args)
     main(**args.__dict__)
