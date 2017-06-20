@@ -11,14 +11,14 @@ from alphatwirl_interface.completions import complete
 import ROOT
 import pprint
 
-def main(in_filename, out_dir, tree_name="tree"):
+def main(in_path, out_dir, tree_name="tree"):
     # Get the input file
-    infile = ROOT.TFile.Open(in_filename)
+    infile = ROOT.TFile.Open(in_path)
     if not infile or infile.IsZombie():
         return
     tree = infile.Get(tree_name)
     if not tree:
-        print "Problem getting tree '",tree_name,"' from input file:",in_filename
+        print "Problem getting tree '",tree_name,"' from input file:",in_path
         return
 
     # Describe the output dataframe
@@ -77,8 +77,8 @@ def process_options():
     import os
     parser = ArgumentParser(description=__doc__, 
                             formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument("in_filename",
-                        help="The path to an input data file")
+    parser.add_argument("in_path",
+                        help="The path to an input data")
     parser.add_argument("-o", "--out_dir",
                         help="The path to an output directory, which should exist",
                         default=os.getcwd())
