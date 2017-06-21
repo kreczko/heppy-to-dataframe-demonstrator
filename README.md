@@ -1,8 +1,9 @@
 # ra1-demonstrator
 Demonstrate the use of AlphaTwirl in RA1 analyses
 
-I'm building up to a full demonstration of analysis by working out each additional step as 
-a separate sub-directory of this package.
+The final analaysis is built up in a series of steps, with each step being implemented as a `run.py`
+file in the corresponding sub-directory of this package.  To see how each step builds on from the
+previous step, it is worth looking at the diff between each steps.
 
 The steps I want to take to get to a full demonstration are:
 1. Local file - Make a dataframe with similar binning to RA1
@@ -13,8 +14,9 @@ The steps I want to take to get to a full demonstration are:
 6. Heppy file structure - Apply non-integer event weights on top of Step 5
 
 # Dependence on the alphatwirl-interface repo
-This package builds off the alphatwirl-interface repo which is still in development and therefore fairly experimental.
-Work here is likely to influence work there and vice versa, so things may change often and significantly
+This package builds off the alphatwirl-interface repo which is still in development and therefore
+fairly experimental.  Work here is likely to influence work there and vice versa, so things may
+change often and significantly
 
 # Usage
 ## Make sure ROOT is installed
@@ -27,19 +29,20 @@ cmsenv
 cd -
 ```
 ## Download and setup these scripts
-It should be sufficient to checkout this package (and it's submodules), source the setup script and start testing each step's run script.
-These steps can be achieved by doing:
+It should be sufficient to checkout this package (and it's submodules), source the setup script and
+start testing each step's run script.  These steps can be achieved by doing:
 ```
 git clone --recursive git@github.com:benkrikler/ra1-demonstrator.git
 cd ra1-demonstrator
 source setup.sh
 ```
-__Please note__ that I have only tested this on Bristol's Soolin so far, since that is where the RA1 trees are located.
-In the final version of this package, it should work on any grid-connected system.
+__Please note__ that I have only tested this on Bristol's Soolin so far, since that is where the RA1
+trees are located.  In the final version of this package, it should work on any grid-connected
+system.
 
 ## Running
-It should be sufficient to change into the directory for the step you want to run, and execute the run script.
-For step2, for example, you can do:
+It should be sufficient to change into the directory for the step you want to run, and execute the
+run script.  For step2, for example, you can do:
 ```
 $ cd step2_local_eventSelection/
 $ ./run.py ../data/20170129_Summer16_newJECs--ZJetsToNuNu_HT100to200_madgraph--treeProducerSusyAlphaT--tree.root

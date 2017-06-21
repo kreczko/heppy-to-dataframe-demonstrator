@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 """
-step4_heppy_interface/run.py
-Run over a heppy dataset
+step6_weighted_events/run.py
+Run over a heppy dataset, weighting events by the genWeight value and
+identifying the source sample in the dataframe
 """
 
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
-import alphatwirl
 from alphatwirl_interface.completions import complete, to_null_collector_pairs
 from alphatwirl_interface.cut_flows import cut_flow_with_counter
 from alphatwirl_interface.scribblers import  DivideNumpyArrays, ComponentName
