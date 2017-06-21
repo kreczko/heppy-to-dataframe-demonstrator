@@ -7,7 +7,7 @@ Use a scribbler to add data to events, and extend step2's event selection
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
 import alphatwirl
-from alphatwirl_interface.completions import complete
+from alphatwirl_interface.completions import complete, to_null_collector_pairs
 from alphatwirl_interface.cut_flows import cut_flow_with_counter
 from alphatwirl_interface.scribblers import  DivideNumpyArrays
 import ROOT
