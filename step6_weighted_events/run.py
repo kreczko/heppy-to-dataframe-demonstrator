@@ -77,7 +77,7 @@ def dataframe_config():
             keyAttrNames = ('componentName', 'ht40', 'nJet40', 'nBJet40'),
             keyOutColumnNames = ('component', 'htbin', 'njetbin', 'nbjetbin'),
             binnings = (component, htbin, njetbin, nbjetbin),
-            weight = WeightCalculatorProduct(['genWeight']) #, 'puWeightFromTbl'])
+            weight = WeightCalculatorProduct(['genWeight'])
         ),
     ]
 
