@@ -89,6 +89,8 @@ def summarize(mgr, df_cfg, event_selection, scribblers, max_events = -1):
     )
     reader_collector_pairs += complete( df_cfg, tableConfigCompleter)
 
+    # Hard-coded list of components is temporary, need to remove this in the
+    # near future
     return mgr.run(reader_collector_pairs,
                    components=["TTWJetsToLNu_amcatnloFXFX", "ZJetsToNuNu_HT100to200_madgraph_ext1"])
 
