@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 """
-step4_heppy_interface/run.py
-Run over a heppy dataset
+step5_components_in_dataframes/run.py
+Run over a heppy dataset, and produce a dataframe with the component name as an
+additional column
 """
 
 from alphatwirl.binning import Binning, Echo
 from alphatwirl.configure import TableConfigCompleter, TableFileNameComposer2
-import alphatwirl
 from alphatwirl_interface.completions import complete, to_null_collector_pairs
 from alphatwirl_interface.cut_flows import cut_flow_with_counter
 from alphatwirl_interface.scribblers import  DivideNumpyArrays, ComponentName
