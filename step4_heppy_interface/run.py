@@ -17,7 +17,7 @@ import pprint
 def main(in_path, out_dir, tree_name="tree", isdata=False):
     # Get the input file
     mgr = build_job_manager(out_dir, in_path, isdata=isdata, n_processes=4,
-                            parallel_mode="htcondor")
+                            parallel_mode="multiprocessing", force=True)
 
     # Setup the scribblers to add objects to event
     scribblers = make_scribblers()
