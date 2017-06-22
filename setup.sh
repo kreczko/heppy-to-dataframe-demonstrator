@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
+
 EXAMPLES_ROOT="$(dirname "$(readlink -f "$BASH_SOURCE[0]")")"
 EXTERNALS=${EXAMPLES_ROOT}/external
 
@@ -7,8 +9,6 @@ ALPHATWIRL=${EXTERNALS}/alphatwirl
 ALPHATWIRL_INTERFACE=${EXTERNALS}/alphatwirl-interface
 
 export PYTHONPATH="${EXAMPLES_ROOT}:${ALPHATWIRL}:${ALPHATWIRL_INTERFACE}${PYTHONPATH+:${PYTHONPATH}}"
-
-pip install --user -r ${EXAMPLES_ROOT}/requirements.txt
 
 PS1_PREFIX=RA1-ATwirl
 

@@ -19,15 +19,6 @@ fairly experimental.  Work here is likely to influence work there and vice versa
 change often and significantly
 
 # Usage
-## Make sure ROOT is installed
-A reliable way to do this is to get an up-to-date copy of CMSSW:
-```
-source /cvmfs/cms.cern.ch/cmsset_default.sh
-cmsrel CMSSW_8_0_25 
-cd CMSSW_8_0_25/src
-cmsenv
-cd -
-```
 ## Download and setup these scripts
 It should be sufficient to checkout this package (and it's submodules), source the setup script and
 start testing each step's run script.  These steps can be achieved by doing:
