@@ -37,6 +37,14 @@ def main(in_path, out_dir, tree_name="tree"):
 
 
 def cut_flow():
+    '''
+        Defines all cuts that will be applied to input data
+    '''
+    # dictionary of selection criteria
+    # the 'All' key denotes that an event has to pass all the listed cuts
+    # other options are Any (or) and Not (inverse)
+    # event (`ev`) refers to a single entry in the input tree
+    # names and indices after that are the branch names
     event_selection = dict(All = (
         'ev : ev.cutflowId[0] == 1',
         'ev : ev.nIsoTracksVeto[0] <= 0',
@@ -52,11 +60,13 @@ def cut_flow():
     # These would be nice, but they require scribblers; we add these in step3
     #    'ev : ev.MhtOverMet[0] < 1.25',
 
+    # create a reader + collector pair for the cutflow
+    # the collector will reject events and store the cut flow into a text file
     return cut_flow_with_counter(event_selection, "cut_flow_table.txt")
 
 
 def dataframe_config():
-    # Set up categorical binning 
+    # Set up categorical binning
     htbin = Binning( boundaries=[200, 400, 600, 900, 1200] )
     njetbin = Binning( boundaries=[1, 2, 3, 4, 5, 6] )
     nbjetbin = Echo()
@@ -98,7 +108,7 @@ def process_options():
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     import sys
     import os
-    parser = ArgumentParser(description=__doc__, 
+    parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("in_path",
                         help="The path to an input data")

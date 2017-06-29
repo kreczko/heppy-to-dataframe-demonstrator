@@ -40,7 +40,7 @@ def main(in_path, out_dir, tree_name="tree", isdata=False):
 
 
 def make_scribblers():
-    scribblers = [ 
+    scribblers = [
         ComponentName(),
         DivideNumpyArrays(['mht40_pt', 'met_pt'],'MhtOverMet'),
     ]
@@ -66,10 +66,11 @@ def cut_flow():
 
 
 def dataframe_config():
-    # Set up categorical binning 
+    # Set up categorical binning
     htbin = Binning( boundaries=[200, 400, 600, 900, 1200] )
     njetbin = Binning( boundaries=[1, 2, 3, 4, 5, 6] )
     nbjetbin = Echo()
+    # a category that returns itself and has no next element
     component = Echo(nextFunc=None)
 
     df_cfg = [
@@ -77,6 +78,8 @@ def dataframe_config():
             keyAttrNames = ('componentName', 'ht40', 'nJet40', 'nBJet40'),
             keyOutColumnNames = ('component', 'htbin', 'njetbin', 'nbjetbin'),
             binnings = (component, htbin, njetbin, nbjetbin),
+            # list of weight branches that are multiplied together for the
+            # final event weight
             weight = WeightCalculatorProduct(['genWeight'])
         ),
     ]
@@ -103,7 +106,7 @@ def process_options():
     from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
     import sys
     import os
-    parser = ArgumentParser(description=__doc__, 
+    parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("in_path",
                         help="The path to the input data")
