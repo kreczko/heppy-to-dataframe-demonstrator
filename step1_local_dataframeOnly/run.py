@@ -11,6 +11,7 @@ from alphatwirl_interface.completions import complete
 import ROOT
 import pprint
 
+
 def main(in_path, out_dir, tree_name="tree"):
     # Get the input file
     infile = ROOT.TFile.Open(in_path)
@@ -18,11 +19,11 @@ def main(in_path, out_dir, tree_name="tree"):
         return
     tree = infile.Get(tree_name)
     if not tree:
-        print "Problem getting tree '",tree_name,"' from input file:",in_path
+        print "Problem getting tree '", tree_name, "' from input file:", in_path
         return
 
     # Describe the output dataframe
-    df_cfg=dataframe_config()
+    df_cfg = dataframe_config()
 
     # Run alphatwirl to build the dataframe
     dataframes = summarize(tree, df_cfg)
@@ -35,35 +36,34 @@ def main(in_path, out_dir, tree_name="tree"):
 def dataframe_config():
     '''
         Creates the definition/config of the data frame (DF).
-        A DF config is a list of dicitonaries, each defining a separate output
-        DF.
+
+        :return a list of DF configs
     '''
     # Set up categorical binning
     # use simple binning for HT and N_jet
-    htbin = Binning( boundaries=[200, 400, 600, 900, 1200] )
-    njetbin = Binning( boundaries=[1, 2, 3, 4, 5, 6] )
-    # for N_{b-jets} we use a generator to define bins based on the data
-    # By default the generator will increase the bin by one
+    htbin = Binning(boundaries=[200, 400, 600, 900, 1200])
+    njetbin = Binning(boundaries=[1, 2, 3, 4, 5, 6])
+    # Echo simply returns the value it gets
     nbjetbin = Echo()
     # explicit version
-    #nbjetbin = Echo(nextFunc = lambda x: x+1, valid = lambda x: True)
+    # nbjetbin = Echo(nextFunc = lambda x: x+1, valid = lambda x: True)
 
-    # create config
-    df_cfg = [
+    # a list of DF configs
+    df_configs = [
         dict(
             # which tree branches to read in
-            keyAttrNames = ('ht40', 'nJet40', 'nBJet40'),
+            keyAttrNames=('ht40', 'nJet40', 'nBJet40'),
             # which columns in the DF they should be mapped to
-            keyOutColumnNames = ('htbin', 'njetbin', 'nbjetbin'),
+            keyOutColumnNames=('htbin', 'njetbin', 'nbjetbin'),
             # the binning for the categories
-            binnings = (htbin, njetbin, nbjetbin)
+            binnings=(htbin, njetbin, nbjetbin)
         ),
     ]
 
-    return df_cfg
+    return df_configs
 
 
-def summarize(tree, df_cfg, max_events = -1):
+def summarize(tree, df_cfg, max_events=-1):
     '''
         Summarise the data in the tree into the data frames (DFs) given in
         df_cfg.
@@ -80,14 +80,14 @@ def summarize(tree, df_cfg, max_events = -1):
     tableConfigCompleter = TableConfigCompleter(
         # using a composer to create a predictable output file name
         # based on the names of the output columns
-        createOutFileName = TableFileNameComposer2(default_prefix = 'tbl_n')
+        createOutFileName=TableFileNameComposer2(default_prefix='tbl_n')
     )
     # combine configs and completers
-    reader_collector_pairs += complete( df_cfg, tableConfigCompleter)
+    reader_collector_pairs += complete(df_cfg, tableConfigCompleter)
 
     # wrap tree for the event loop
     def event_builder():
-        return alphatwirl.roottree.BEvents(tree, maxEvents = max_events)
+        return alphatwirl.roottree.BEvents(tree, maxEvents=max_events)
 
     # create reader and collector collections
     reader = alphatwirl.loop.ReaderComposite()

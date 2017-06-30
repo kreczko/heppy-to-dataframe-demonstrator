@@ -20,7 +20,8 @@ def main(in_path, out_dir, tree_name="tree"):
         return
     tree = infile.Get(tree_name)
     if not tree:
-        print "Problem getting tree '",tree_name,"' from input file:",in_path
+        print "Problem getting tree '", tree_name, "' from input file:", in_path
+
         return
 
     # Setup the scribblers to add objects to event
@@ -30,7 +31,7 @@ def main(in_path, out_dir, tree_name="tree"):
     event_selection = cut_flow()
 
     # Describe the output dataframe
-    df_cfg=dataframe_config()
+    df_cfg = dataframe_config()
 
     # Run alphatwirl to build the dataframe
     dataframes = summarize(tree, df_cfg, event_selection, scribblers)
@@ -57,6 +58,14 @@ def make_scribblers():
 
 
 def cut_flow():
+    '''
+        Defines all cuts that will be applied to input data
+    '''
+    # dictionary of selection criteria
+    # the 'All' key denotes that an event has to pass all the listed cuts
+    # other options are Any (or) and Not (inverse)
+    # event (`ev`) refers to a single entry in the input tree
+    # names and indices after that are the branch names
     event_selection = dict(All = (
         'ev : ev.cutflowId[0] == 1',
         'ev : ev.nIsoTracksVeto[0] <= 0',
@@ -72,45 +81,82 @@ def cut_flow():
         'ev : ev.MhtOverMet[0] < 1.25',
     ))
 
+    # create a reader + collector pair for the cutflow
+    # the collector will reject events and store the cut flow into a text file
     return cut_flow_with_counter(event_selection, "cut_flow_table.txt")
 
 
 def dataframe_config():
-    # Set up categorical binning
-    htbin = Binning( boundaries=[200, 400, 600, 900, 1200] )
-    njetbin = Binning( boundaries=[1, 2, 3, 4, 5, 6] )
-    nbjetbin = Echo()
+    '''
+        Creates the definition/config of the data frame (DF).
 
-    df_cfg = [
+        :return a list of DF configs
+    '''
+    # Set up categorical binning
+    # use simple binning for HT and N_jet
+    htbin = Binning(boundaries=[200, 400, 600, 900, 1200])
+    njetbin = Binning(boundaries=[1, 2, 3, 4, 5, 6])
+    # Echo simply returns the value it gets
+    nbjetbin = Echo()
+    # explicit version
+    # nbjetbin = Echo(nextFunc = lambda x: x+1, valid = lambda x: True)
+
+    # a list of DF configs
+    df_configs = [
         dict(
-            keyAttrNames = ('ht40', 'nJet40', 'nBJet40'),
-            keyOutColumnNames = ('htbin', 'njetbin', 'nbjetbin'),
-            binnings = (htbin, njetbin, nbjetbin)
+            # which tree branches to read in
+            keyAttrNames=('ht40', 'nJet40', 'nBJet40'),
+            # which columns in the DF they should be mapped to
+            keyOutColumnNames=('htbin', 'njetbin', 'nbjetbin'),
+            # the binning for the categories
+            binnings=(htbin, njetbin, nbjetbin)
         ),
     ]
 
-    return df_cfg
+    return df_configs
 
 
 def summarize(tree, df_cfg, event_selection, scribblers, max_events = -1):
+    '''
+        Summarise the data in the tree into the data frames (DFs) given in
+        df_cfg.
+
+        :param tree(ROOT.TTree): the input tree
+        :param df_cfg(list): list of DF definitions
+        :param event_selection: pairs of event selections and collectors
+        :param scribblers: pairs of scribblers and empty collectors which
+                           create new event content
+        :param max_events(int): Number of events to process.
+                                Default is -1 -> all events
+    '''
 
     reader_collector_pairs = scribblers + event_selection
 
+    # setting up defaults to complete the provided DF configs
     tableConfigCompleter = TableConfigCompleter(
-        createOutFileName = TableFileNameComposer2(default_prefix = 'tbl_n')
+        # using a composer to create a predictable output file name
+        # based on the names of the output columns
+        createOutFileName=TableFileNameComposer2(default_prefix='tbl_n')
     )
-    reader_collector_pairs += complete( df_cfg, tableConfigCompleter)
+    # combine configs and completers
+    reader_collector_pairs += complete(df_cfg, tableConfigCompleter)
 
+    # wrap tree for the event loop
     def event_builder():
-        return alphatwirl.roottree.BEvents(tree, maxEvents = max_events)
+        return alphatwirl.roottree.BEvents(tree, maxEvents=max_events)
 
+    # create reader and collector collections
     reader = alphatwirl.loop.ReaderComposite()
     collector = alphatwirl.loop.CollectorComposite()
     for r, c in reader_collector_pairs:
         reader.add(r)
         collector.add(c)
+
+    # loop over all events
     eventLoop = alphatwirl.loop.EventLoop(event_builder, reader)
     reader = eventLoop()
+
+    # collect all results and return them
     return collector.collect(((None, (reader, )), ))
 
 
