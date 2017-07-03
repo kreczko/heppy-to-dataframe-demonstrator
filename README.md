@@ -12,6 +12,7 @@ The steps I want to take to get to a full demonstration are:
 4. Heppy file structure - Same as Step 3 but use a Heppy components directory as input
 5. Heppy file structure - Add a "component name" scribbler to Step 4
 6. Heppy file structure - Apply non-integer event weights on top of Step 5
+7. Heppy file structure - Run Step 6 over all heppy components and use HTCondor to run jobs in parallel
 
 # Dependence on the alphatwirl-interface repo
 This package builds off the alphatwirl-interface repo which is still in development and therefore
