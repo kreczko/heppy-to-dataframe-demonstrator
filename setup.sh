@@ -10,7 +10,7 @@ ALPHATWIRL_INTERFACE=${EXTERNALS}/alphatwirl-interface
 
 export PYTHONPATH="${EXAMPLES_ROOT}:${ALPHATWIRL}:${ALPHATWIRL_INTERFACE}${PYTHONPATH+:${PYTHONPATH}}"
 
-PS1_PREFIX=RA1-ATwirl
+PS1_PREFIX=demo-ATwirl
 
 DataDir=data
 LocalDataFile=/hdfs/SUSY/RA1/80X/MC/20170129_Summer16_newJECs/AtLogic_MCSummer16_SM/ZJetsToNuNu_HT100to200_madgraph/treeProducerSusyAlphaT/tree.root

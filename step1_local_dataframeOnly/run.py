@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 """
-Produce a dataframe from a local, flat RA1 tree, with columns similar to RA1
+Produce a dataframe from a local flat tree, with columns similar to RA1
 bins and unweighted event yields
 """
 
