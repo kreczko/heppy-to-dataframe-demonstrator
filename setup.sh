@@ -18,11 +18,15 @@ OutLocalDataFile=$(cut -f7,9-11 -d/ <<<"$LocalDataFile" |sed -e 's%/%--%g')
 ( 
 mkdir -p "$DataDir"
 cd "$DataDir"
-if [ ! -r "${OutLocalDataFile}" ];then
-    echo "Fetching a local data file for you"
-    (
-    set -x
-    cp "$LocalDataFile" "$OutLocalDataFile"
-    )
+if [ ! -r "${OutLocalDataFile}" ] ;then
+    if [ -r "${LocalDataFile}" ]; then
+        echo "Fetching a local data file for you"
+        (
+        set -x
+        cp "$LocalDataFile" "$OutLocalDataFile"
+        )
+    else
+        echo "Tried to fetch a local testing data file for you but couldn't find one"
+    fi
 fi
 )
