@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source /cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
+SoftwareSetup=/cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
+if [ -r "${SoftwareSetup}" ]; then
+    source "${SoftwareSetup}"
+fi
 
 EXAMPLES_ROOT="$(dirname "$(readlink -f "$BASH_SOURCE[0]")")"
 EXTERNALS=${EXAMPLES_ROOT}/external
