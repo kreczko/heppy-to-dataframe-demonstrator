@@ -1,11 +1,14 @@
-#!/bin/bash
+#!/bin/bash 
 
 SoftwareSetup=/cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
 if [ -r "${SoftwareSetup}" ]; then
     source "${SoftwareSetup}"
 fi
 
-EXAMPLES_ROOT="$(dirname "$(readlink -f "$BASH_SOURCE[0]")")"
+Canonicalize="readlink -f"
+$Canonicalize $PWD &> /dev/null || Canonicalize=realpath
+
+EXAMPLES_ROOT="$(dirname "$($Canonicalize "$BASH_SOURCE[0]")")"
 EXTERNALS=${EXAMPLES_ROOT}/external
 
 ALPHATWIRL=${EXTERNALS}/alphatwirl
