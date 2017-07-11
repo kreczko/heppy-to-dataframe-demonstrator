@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 SoftwareSetup=/cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
+ls $SoftwareSetup &> /dev/null || true # Hack to ensure cvmfs is mounted on cold system
 if [ -r "${SoftwareSetup}" ]; then
     source "${SoftwareSetup}"
 fi
