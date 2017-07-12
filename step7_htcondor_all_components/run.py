@@ -16,7 +16,7 @@ from alphatwirl_interface.heppy.runners import  build_job_manager
 import ROOT
 import pprint
 
-def main(in_path, out_dir, tree_name="tree", isdata=False):
+def main(in_path, out_dir, tree_name="tree", isdata=False, components=["all"]):
     # Get the input file
     mgr = build_job_manager(out_dir, in_path, isdata=isdata,
                             parallel_mode="htcondor", force=True)
@@ -31,7 +31,7 @@ def main(in_path, out_dir, tree_name="tree", isdata=False):
     df_cfg = dataframe_config()
 
     # Run alphatwirl to build the dataframe
-    dataframes = summarize(mgr, df_cfg, event_selection, scribblers)
+    dataframes = summarize(mgr, df_cfg, event_selection, scribblers, components)
 
     # Print everything out
     print "Number of dataframes created:",len(dataframes)
@@ -53,6 +53,7 @@ def make_scribblers():
         # input variables must be of the same lenght!
         DivideNumpyArrays(['mht40_pt', 'met_pt'],'MhtOverMet'),
     ]
+    # pair the scribblers with "NULL" collectors
     return to_null_collector_pairs(scribblers)
 
 
@@ -131,8 +132,7 @@ def summarize(mgr, df_cfg, event_selection, scribblers, max_events = -1):
         :param event_selection: pairs of event selections and collectors
         :param scribblers: pairs of scribblers and empty collectors which
                            create new event content
-        :param max_events(int): Number of events to process.
-                                Default is -1 -> all events
+        :param components: list of heppy component names to summarize
     '''
 
     reader_collector_pairs = scribblers + event_selection
@@ -144,10 +144,9 @@ def summarize(mgr, df_cfg, event_selection, scribblers, max_events = -1):
         createOutFileName=TableFileNameComposer2(default_prefix='tbl_n')
     )
     # combine configs and completers
-    reader_collector_pairs += complete( df_cfg, tableConfigCompleter)
+    reader_collector_pairs += complete(df_cfg, tableConfigCompleter)
 
-    # Unlike step6, now run over all components
-    return mgr.run(reader_collector_pairs)
+    return mgr.run(reader_collector_pairs, components=components)
 
 
 def process_options():
@@ -165,6 +164,10 @@ def process_options():
                         const=False, default=False, help='Input events are from MC')
     parser.add_argument('--data', action='store_const', dest='isdata',
                         const=True, help='Input events are from Data')
+    parser.add_argument('--components', default=["all"],
+                        help="""
+                             Select which Heppy components to read. \
+                                Use "all" to read everything""")
     return parser.parse_args()
 
 

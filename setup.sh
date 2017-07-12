@@ -1,8 +1,15 @@
-#!/bin/bash
+#!/bin/bash 
 
-source /cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
+SoftwareSetup=/cvmfs/sft.cern.ch/lcg/views/LCG_latest/x86_64-slc6-gcc62-opt/setup.sh
+ls $SoftwareSetup &> /dev/null || true # Hack to ensure cvmfs is mounted on cold system
+if [ -r "${SoftwareSetup}" ]; then
+    source "${SoftwareSetup}"
+fi
 
-EXAMPLES_ROOT="$(dirname "$(readlink -f "$BASH_SOURCE[0]")")"
+Canonicalize="readlink -f"
+$Canonicalize $PWD &> /dev/null || Canonicalize=realpath
+
+EXAMPLES_ROOT="$(dirname "$($Canonicalize "$BASH_SOURCE[0]")")"
 EXTERNALS=${EXAMPLES_ROOT}/external
 
 ALPHATWIRL=${EXTERNALS}/alphatwirl
@@ -18,11 +25,15 @@ OutLocalDataFile=$(cut -f7,9-11 -d/ <<<"$LocalDataFile" |sed -e 's%/%--%g')
 ( 
 mkdir -p "$DataDir"
 cd "$DataDir"
-if [ ! -r "${OutLocalDataFile}" ];then
-    echo "Fetching a local data file for you"
-    (
-    set -x
-    cp "$LocalDataFile" "$OutLocalDataFile"
-    )
+if [ ! -r "${OutLocalDataFile}" ] ;then
+    if [ -r "${LocalDataFile}" ]; then
+        echo "Fetching a local data file for you"
+        (
+        set -x
+        cp "$LocalDataFile" "$OutLocalDataFile"
+        )
+    else
+        echo "Tried to fetch a local testing data file for you but couldn't find one"
+    fi
 fi
 )
